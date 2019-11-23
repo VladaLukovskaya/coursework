@@ -1,19 +1,16 @@
-import os
 from flask import Flask, render_template, session, redirect, url_for
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
 from flask_sqlalchemy import SQLAlchemy
+from config import Config
+from flask_migrate import Migrate
 from flask_script import Shell
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
 
-basedir = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'hard to guess string'
-app.config['SQLALCHEMY_DATABASE_URI'] =\
-    'sqlite:///' + os.path.join(basedir, 'data.sqlite')
-app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
+app.config.from_object(Config)
 
 bootstrap = Bootstrap(app)
 db = SQLAlchemy(app)
@@ -33,6 +30,7 @@ class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), unique=True, index=True)
+    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
 
     def __repr__(self):
         return '<User %r>' % self.username
@@ -46,11 +44,6 @@ class NameForm(FlaskForm):
 @app.errorhandler(404)
 def page_not_found(er):
     return render_template('404.html'), 404
-
-
-@app.shell_context_processor
-def make_shell_context():
-    return dict(db=db, User=User, Role=Role)
 
 
 @app.route('/', methods=['GET', 'POST'])
