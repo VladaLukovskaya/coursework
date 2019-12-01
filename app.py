@@ -3,17 +3,16 @@ from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
 from flask_sqlalchemy import SQLAlchemy
 from config import Config
-from flask_migrate import Migrate
-from flask_script import Shell
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 app.config.from_object(Config)
 
 bootstrap = Bootstrap(app)
 db = SQLAlchemy(app)
-
+migrate = Migrate(app, db)
 
 class Role(db.Model):
     __tablename__ = 'roles'
@@ -66,6 +65,10 @@ def index():
         return redirect(url_for('index'))
     return render_template('index.html', form=form, name=session.get('name'), known=session.get('known', False))
 
+@app.route('/show')
+def show():
+    user = User()
+    return user.id, user.username
 
 if __name__ == '__main__':
     app.run(debug=True)
