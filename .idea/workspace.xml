@@ -2,12 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="003d85f2-e317-4f4b-9d21-96a598bb27ed" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -41,29 +42,22 @@
   </component>
   <component name="ProjectId" id="1TW3wCf00fBapNEG8YI4CQPm9tK" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
     <property name="DatabaseDriversLRU" value="postgresql" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Documents/flasky" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../flasky" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/static" />
     </key>
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
   </component>
   <component name="RunManager" selected="Flask server.Flask (app.py)">
     <configuration name="context" type="PythonConfigurationType" factoryName="Python" temporary="true">
@@ -125,6 +119,18 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -138,6 +144,10 @@
       <workItem from="1573562267851" duration="23843000" />
       <workItem from="1574511727640" duration="11653000" />
       <workItem from="1575197414308" duration="8092000" />
+      <workItem from="1575210267029" duration="4379000" />
+      <workItem from="1575288930702" duration="9425000" />
+      <workItem from="1575458544922" duration="602000" />
+      <workItem from="1575460559606" duration="17209000" />
     </task>
     <servers />
   </component>
@@ -157,8 +167,50 @@
       </map>
     </option>
   </component>
+  <component name="WindowStateProjectService">
+    <state width="908" height="188" key="GridCell.Tab.0.bottom" timestamp="1575632444238">
+      <screen x="70" y="27" width="1850" height="1053" />
+    </state>
+    <state width="908" height="188" key="GridCell.Tab.0.bottom/70.27.1850.1053@70.27.1850.1053" timestamp="1575632444238" />
+    <state width="908" height="188" key="GridCell.Tab.0.center" timestamp="1575632444237">
+      <screen x="70" y="27" width="1850" height="1053" />
+    </state>
+    <state width="908" height="188" key="GridCell.Tab.0.center/70.27.1850.1053@70.27.1850.1053" timestamp="1575632444237" />
+    <state width="908" height="188" key="GridCell.Tab.0.left" timestamp="1575632444237">
+      <screen x="70" y="27" width="1850" height="1053" />
+    </state>
+    <state width="908" height="188" key="GridCell.Tab.0.left/70.27.1850.1053@70.27.1850.1053" timestamp="1575632444237" />
+    <state width="908" height="188" key="GridCell.Tab.0.right" timestamp="1575632444238">
+      <screen x="70" y="27" width="1850" height="1053" />
+    </state>
+    <state width="908" height="188" key="GridCell.Tab.0.right/70.27.1850.1053@70.27.1850.1053" timestamp="1575632444238" />
+    <state width="908" height="336" key="GridCell.Tab.1.bottom" timestamp="1575622397580">
+      <screen x="70" y="27" width="1850" height="1053" />
+    </state>
+    <state width="908" height="336" key="GridCell.Tab.1.bottom/70.27.1850.1053@70.27.1850.1053" timestamp="1575622397580" />
+    <state width="908" height="336" key="GridCell.Tab.1.center" timestamp="1575622397579">
+      <screen x="70" y="27" width="1850" height="1053" />
+    </state>
+    <state width="908" height="336" key="GridCell.Tab.1.center/70.27.1850.1053@70.27.1850.1053" timestamp="1575622397579" />
+    <state width="908" height="336" key="GridCell.Tab.1.left" timestamp="1575622397579">
+      <screen x="70" y="27" width="1850" height="1053" />
+    </state>
+    <state width="908" height="336" key="GridCell.Tab.1.left/70.27.1850.1053@70.27.1850.1053" timestamp="1575622397579" />
+    <state width="908" height="336" key="GridCell.Tab.1.right" timestamp="1575622397580">
+      <screen x="70" y="27" width="1850" height="1053" />
+    </state>
+    <state width="908" height="336" key="GridCell.Tab.1.right/70.27.1850.1053@70.27.1850.1053" timestamp="1575622397580" />
+    <state width="263" height="500" key="HiddenNamespacesPopup" timestamp="1575460647989">
+      <screen x="70" y="27" width="1850" height="1053" />
+    </state>
+    <state width="263" height="500" key="HiddenNamespacesPopup/70.27.1850.1053@70.27.1850.1053" timestamp="1575460647989" />
+    <state x="635" y="368" key="com.intellij.ide.util.TipDialog" timestamp="1575460564609">
+      <screen x="70" y="27" width="1850" height="1053" />
+    </state>
+    <state x="635" y="368" key="com.intellij.ide.util.TipDialog/70.27.1850.1053@70.27.1850.1053" timestamp="1575460564609" />
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/coursework$Flask__app_py_.coverage" NAME="Flask (app.py) Coverage Results" MODIFIED="1575208163565" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/coursework$Flask__app_py_.coverage" NAME="Flask (app.py) Coverage Results" MODIFIED="1575631925033" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/coursework$context.coverage" NAME="context Coverage Results" MODIFIED="1573566973001" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
