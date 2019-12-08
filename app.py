@@ -1,10 +1,7 @@
 from flask import Flask, render_template, session, redirect, url_for, request
 from flask_bootstrap import Bootstrap
-from flask_wtf import FlaskForm
 from flask_sqlalchemy import SQLAlchemy
 from config import Config
-from wtforms import StringField, SubmitField, IntegerField, DateField, PasswordField, validators
-from wtforms.validators import DataRequired, InputRequired, Length, ValidationError
 from flask_migrate import Migrate
 from forms import NameForm, LoginForm
 import hashlib
@@ -34,10 +31,8 @@ class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), unique=True, index=True)
+    hash_pass = db.Column(db.String(128))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
-
-    def __repr__(self):
-        return '<User %r>' % self.username
 
 
 class Service(db.Model):
@@ -46,19 +41,18 @@ class Service(db.Model):
     name = db.Column(db.VARCHAR(30), unique=True)
     cost = db.Column(db.Integer)
     addition_docum = db.Column(db.VARCHAR, nullable=True)
-
-    def __repr__(self):
-        return '<Service %r>' % self.name
+    application = db.relationship('Application', lazy='dynamic')
+    log = db.relationship('Log', lazy='dynamic')
 
 
 class Application(db.Model):
     __tablename__ = 'Applications'
     num_of_applic = db.Column(db.Integer, primary_key=True)
-    code_of_employee = db.Column(db.Integer, db.ForeignKey('Employees.code_of_employee'))
-    code_of_service = db.Column(db.Integer, db.ForeignKey('Services.code_of_service'))
+    code_of_employee = db.Column(db.Integer, db.ForeignKey('Employees.code_of_employee'))  # **
+    code_of_service = db.Column(db.Integer, db.ForeignKey('Services.code_of_service'))  # **
     date_of_record = db.Column(db.DATE)
-    series_of_docum = db.Column(db.Integer, db.ForeignKey('Docums_of_client.series_of_doc'))
-    number_of_docum = db.Column(db.Integer, db.ForeignKey('Docums_of_client.number_of_doc'))
+    num_and_ser_of_docum = db.Column(db.Integer, db.ForeignKey('Docums_of_client.num_and_ser_of_doc'))  # **
+    registrarion = db.relationship('Log', secondary=Log_to_applic, lazy='dynamic')  # ???
 
 
 class Employee(db.Model):
@@ -70,9 +64,12 @@ class Employee(db.Model):
     address = db.Column(db.VARCHAR(80))
     sex = db.Column(db.Integer)  # 1-male, 2 - female
     telephone = db.Column(db.VARCHAR(15))
-    type_of_employee = db.Column(db.VARCHAR)
+    type_of_employee = db.Column(db.VARCHAR(20))
     number_of_licence = db.Column(db.Integer, nullable=True)
     date_of_lic_issuance = db.Column(db.DATE, nullable=True)
+    application = db.relationship('Application', lazy='dynamic')
+    for_lan_know = db.relationship('ForeignLanKnowledge', lazy='dynamic')
+    client = db.relationship('Client', lazy='dynamic')
 
 
 class NaturalPerson(db.Model):
@@ -81,21 +78,21 @@ class NaturalPerson(db.Model):
     surname = db.Column(db.VARCHAR(30))
     first_name = db.Column(db.VARCHAR(20))
     farther_name = db.Column(db.VARCHAR(30), nullable=True)
+    sex = db.Column(db.Integer)  # 1-male, 2 - female
     date_of_birth = db.Column(db.DATE)
     data_of_marriage = db.Column(db.DATE)  # 1 - in marriage, 2 - not
 
 
 Proxy = db.Table('proxies',
                  db.Column('code_of_client', db.Integer, db.ForeignKey('Clients.code_of_client')),
-                 db.Column('num_of_doc', db.Integer, db.ForeignKey('Trustee.num_of_doc')),
-                 db.Column('series_of_doc', db.Integer, db.ForeignKey('Trustee.series_of_doc')))
+                 db.Column('num_and_ser_of_doc', db.Integer, db.ForeignKey('Trustee.num_and_ser_of_doc')))
 # for nat_per, leg_per and their trustees &&&
 
 
 class LegalPerson(db.Model):
     __tablename__ = 'Legal_Persons'
     code_of_client = db.Column(db.Integer, primary_key=True)
-    name_of_client = db.Column(db.VARCHAR)
+    name_of_client = db.Column(db.VARCHAR(50))
 
 
 class Country(db.Model):
@@ -107,8 +104,8 @@ class Country(db.Model):
 class ForeignLanKnowledge(db.Model):
     __tablename__ = 'Foreign_lan_knowledge'
     code_of_lang = db.Column(db.Integer, primary_key=True)
-    code_of_empl = db.Column(db.Integer, primary_key=True)
-    code_of_knowl = db.Column(db.Integer, db.ForeignKey('Codif_of_proficiency_lang.code_of_profic'))
+    code_of_empl = db.Column(db.Integer, db.ForeignKey('Employees.code_of_employee'))  # **
+    code_of_knowl = db.Column(db.Integer, db.ForeignKey('Codif_of_proficiency_lang.code_of_profic'))  # **
 
 
 class CodifOfLanguage(db.Model):
@@ -121,6 +118,7 @@ class CodifOfProficiencyLang(db.Model):
     __tablename__ = 'Codif_of_proficiency_lang'
     code_of_profic = db.Column(db.Integer, primary_key=True)
     name_of_profic = db.Column(db.VARCHAR(15))
+    for_lan_know = db.relationship('ForeignLanKnowledge', lazy='dynamic')
 
 
 class Client(db.Model):
@@ -131,7 +129,9 @@ class Client(db.Model):
     e_mail = db.Column(db.VARCHAR(30))
     address = db.Column(db.VARCHAR(80))
     telephone = db.Column(db.VARCHAR(15))
-    code_of_emp = db.Column(db.Integer, db.ForeignKey('Employees.code_of_employee'))
+    code_of_emp = db.Column(db.Integer, db.ForeignKey('Employees.code_of_employee'))  # **
+    doc_of_client = db.relationship('DocumOfClient', lazy='dynamic')
+    log = db.relationship('Log', lazy='dynamic')
 
 
 Registration = db.Table('registrations',
@@ -141,55 +141,52 @@ Registration = db.Table('registrations',
 
 class DocumOfClient(db.Model):
     __tablename__ = 'Docums_of_client'
-    number_of_doc = db.Column(db.Integer, primary_key=True)
-    series_of_doc = db.Column(db.Integer, primary_key=True)
-    code_of_client = db.Column(db.Integer, db.ForeignKey('Clients.code_of_client'))
+    num_and_ser_of_doc = db.Column(db.Integer, primary_key=True)
+    code_of_client = db.Column(db.Integer, db.ForeignKey('Clients.code_of_client'))  # **
     name_of_doc = db.Column(db.VARCHAR(30))
+    application = db.relationship('Application', lazy='dynamic')
 
 
 class Log(db.Model):
     __tablename__ = 'Logs'
     num_of_act = db.Column(db.Integer, primary_key=True)
-    date_of_issuance = db.Column(db.DATE)
-    code_of_client = db.Column(db.Integer, db.ForeignKey('Clients.code_of_client'))
-    code_of_service = db.Column(db.Integer, db.ForeignKey('Services.code_of_service'))
+    date_of_issuance = db.Column(db.DateTime)
+    code_of_client = db.Column(db.Integer, db.ForeignKey('Clients.code_of_client'))    # **
+    code_of_service = db.Column(db.Integer, db.ForeignKey('Services.code_of_service'))  # **
     content = db.Column(db.VARCHAR)
+    form = db.relationship('Form', lazy='dynamic')
+    participant = db.relationship('Participant', lazy='dynamic')
+    registration = db.relationship('Application', secondary=Log_to_applic,  lazy='dynamic')
 
 
-Registr = db.Table('registrs',
+Log_to_applic = db.Table('log_to_applic',
                  db.Column('num_of_act', db.Integer, db.ForeignKey('Logs.num_of_act')),
-                 db.Column('num_of_applic', db.Integer, db.ForeignKey('Applications.num_of_applic')))  # &&&
+                 db.Column('num_of_applic', db.Integer, db.ForeignKey('Applications.num_of_applic')))
 
 
 class Trustee(db.Model):
     __tablename__ = 'Trustee'
-    num_of_doc = db.Column(db.Integer, primary_key=True)
-    series_of_doc = db.Column(db.Integer, primary_key=True)
+    num_and_ser_of_doc = db.Column(db.Integer, primary_key=True)
     date_of_regist_of_trust = db.Column(db.DATE)
     place_of_regist_of_trust = db.Column(db.VARCHAR(30))
 
 
 class Form(db.Model):
     __tablename__ = 'Forms'
-    num_of_form = db.Column(db.Integer, primary_key=True)
-    type_of_form = db.Column(db.VARCHAR, primary_key=True)
-    num_of_not_act = db.Column(db.Integer, db.ForeignKey('Logs.num_of_act'))
+    code_of_form = db.Column(db.Integer, primary_key=True)
+    num_of_form = db.Column(db.Integer)
+    type_of_form = db.Column(db.VARCHAR(40))
+    num_of_not_act = db.Column(db.Integer, db.ForeignKey('Logs.num_of_act'))  # **
 
 
 class Participant(db.Model):
     __tablename__ = 'Participants'
-    series_of_doc = db.Column(db.Integer, primary_key=True)
-    num_of_doc = db.Column(db.Integer, primary_key=True)
+    num_and_ser_of_doc = db.Column(db.Integer, primary_key=True)
     surname = db.Column(db.VARCHAR(30))
     first_name = db.Column(db.VARCHAR(20))
     farther_name = db.Column(db.VARCHAR(30), nullable=True)
-    address = db.Column(db.VARCHAR)
-    num_of_not_act = db.Column(db.Integer, db.ForeignKey('Logs.num_of_act'))
-
-
-class NameForm(FlaskForm):
-    name = StringField('What is your name?', validators=[DataRequired()])
-    submit = SubmitField('Submit')
+    address = db.Column(db.VARCHAR(80))
+    num_of_not_act = db.Column(db.Integer, db.ForeignKey('Logs.num_of_act'))  # **
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -202,6 +199,7 @@ def login():
         if username == User.username:
             return 'Привет,', User.username
     return render_template('index.html', block_title='Логин', form=form)
+
 
 @app.shell_context_processor
 def make_shell_context():
