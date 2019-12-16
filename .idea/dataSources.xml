@@ -7,11 +7,11 @@
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/app.db</jdbc-url>
     </data-source>
-    <data-source source="LOCAL" name="postgres@localhost" uuid="126125c6-8540-417e-97a2-28130e013955">
+    <data-source source="LOCAL" name="notary_office@localhost" uuid="126125c6-8540-417e-97a2-28130e013955">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5432/postgres</jdbc-url>
+      <jdbc-url>jdbc:postgresql://localhost:5432/notary_office</jdbc-url>
     </data-source>
   </component>
 </project>

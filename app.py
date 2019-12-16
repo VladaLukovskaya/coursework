@@ -1,4 +1,4 @@
-from flask import Flask, render_template, session, redirect, url_for, request
+from flask import Flask, render_template, session, redirect, url_for, request, flash
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from config import Config
@@ -7,14 +7,17 @@ from forms import NameForm, LoginForm, ServiceForm, ApplicationForm, EmployeeFor
     CountryForm, ForLanKnowForm, CodOfLanForm, CodOfProfLanForm, ClientForm, DocOfClientForm, LogForm, TrusteeForm, \
     BlankForm, ParticipantFrom
 # from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import login_required, login_user, UserMixin, LoginManager
+from flask_login import login_required, login_user, logout_user, UserMixin, LoginManager
 import hashlib
 
 app = Flask(__name__)
 app.config.from_object(Config)
 
 login_manager = LoginManager(app)
+login_manager.init_app(app)
 login_manager.login_view = 'login'
+login_manager.session_protection = 'strong'
+
 bootstrap = Bootstrap(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -22,6 +25,7 @@ migrate = Migrate(app, db)
 
 @login_manager.user_loader
 def load_user(user_id):
+    # return User.get(user_id)
     return User.query.filter(User.id == user_id).first()
 
 
@@ -36,7 +40,7 @@ class User(db.Model, UserMixin):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), unique=True, index=True)
-    hash_pass = db.Column(db.String(128))
+    hash_pass = db.Column(db.String(65))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
 
     # def set_password(self, password):
@@ -54,7 +58,7 @@ Registration = db.Table('registrations',
 
 Proxy = db.Table('proxies',
                  db.Column('code_of_client', db.Integer, db.ForeignKey('clients.code_of_client')),
-                 db.Column('num_and_ser_of_doc', db.Integer, db.ForeignKey('trustee.num_and_ser_of_doc')))
+                 db.Column('num_of_doc', db.BigInteger, db.ForeignKey('trustee.num_of_doc')))
 # for nat_per, leg_per and their trustees &&&
 
 
@@ -66,7 +70,7 @@ Log_to_applic = db.Table('log_to_applic',
 class Service(db.Model):
     __tablename__ = 'services'
     code_of_service = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.VARCHAR(30), unique=True, nullable=False)
+    name = db.Column(db.VARCHAR, unique=True, nullable=False)
     cost = db.Column(db.Integer)
     addition_docum = db.Column(db.VARCHAR, nullable=True)
     application = db.relationship('Application', lazy='dynamic')
@@ -79,17 +83,16 @@ class Application(db.Model):
     code_of_employee = db.Column(db.Integer, db.ForeignKey('employees.code_of_employee'))  # **
     code_of_service = db.Column(db.Integer, db.ForeignKey('services.code_of_service'))  # **
     date_of_record = db.Column(db.DATE, nullable=False)
-    num_and_ser_of_docum = db.Column(db.Integer, db.ForeignKey('docums_of_client.num_and_ser_of_doc'))  # **
-    registrarion = db.relationship('Log', secondary=Log_to_applic, lazy='dynamic')  # ???
+    num_of_docum = db.Column(db.BigInteger, db.ForeignKey('docums_of_client.num_of_doc'))  # **
 
 
 class Employee(db.Model):
     __tablename__ = 'employees'
     code_of_employee = db.Column(db.Integer, primary_key=True)
-    surname = db.Column(db.VARCHAR(30), nullable=False)  # фамилия
-    first_name = db.Column(db.VARCHAR(20), nullable=False)  # имя
-    farther_name = db.Column(db.VARCHAR(30), nullable=True)  # отчество
-    address = db.Column(db.VARCHAR(80), nullable=False)
+    surname = db.Column(db.VARCHAR(50), nullable=False)  # фамилия
+    first_name = db.Column(db.VARCHAR(50), nullable=False)  # имя
+    farther_name = db.Column(db.VARCHAR(50), nullable=True)  # отчество
+    address = db.Column(db.VARCHAR, nullable=False)
     sex = db.Column(db.Integer)  # 1-male, 2 - female
     telephone = db.Column(db.VARCHAR(15), nullable=False)
     type_of_employee = db.Column(db.VARCHAR(20), nullable=False)
@@ -103,29 +106,30 @@ class Employee(db.Model):
 class NaturalPerson(db.Model):
     __tablename__ = 'natural_persons'
     code_of_client = db.Column(db.Integer, primary_key=True)
-    surname = db.Column(db.VARCHAR(30), nullable=False)
-    first_name = db.Column(db.VARCHAR(20), nullable=False)
-    farther_name = db.Column(db.VARCHAR(30), nullable=True)
+    surname = db.Column(db.VARCHAR(50), nullable=False)
+    first_name = db.Column(db.VARCHAR(50), nullable=False)
+    farther_name = db.Column(db.VARCHAR(50), nullable=True)
     sex = db.Column(db.Integer)  # 1-male, 2 - female
     date_of_birth = db.Column(db.DATE, nullable=False)
-    data_of_marriage = db.Column(db.DATE)  # 1 - in marriage, 2 - not
+    data_marriage = db.Column(db.Integer)  # 1 - in marriage, 2 - not
 
 
 class LegalPerson(db.Model):
     __tablename__ = 'legal_persons'
     code_of_client = db.Column(db.Integer, primary_key=True)
-    name_of_client = db.Column(db.VARCHAR(50), nullable=False)
+    name_of_client = db.Column(db.VARCHAR(100), nullable=False)
 
 
 class Country(db.Model):
     __tablename__ = 'countries'
     code_of_country = db.Column(db.Integer, primary_key=True)
-    name_of_country = db.Column(db.VARCHAR(50), nullable=False)
+    name_of_country = db.Column(db.VARCHAR(70), nullable=False)
 
 
 class ForeignLanKnowledge(db.Model):
     __tablename__ = 'foreign_lan_knowledge'
-    code_of_lang = db.Column(db.Integer, primary_key=True)
+    knowled_id = db.Column(db.Integer, primary_key=True)
+    code_of_lang = db.Column(db.Integer, db.ForeignKey('codif_of_language.code_of_lang'))
     code_of_empl = db.Column(db.Integer, db.ForeignKey('employees.code_of_employee'))  # **
     code_of_knowl = db.Column(db.Integer, db.ForeignKey('codif_of_proficiency_lang.code_of_profic'))  # **
 
@@ -133,13 +137,13 @@ class ForeignLanKnowledge(db.Model):
 class CodifOfLanguage(db.Model):
     __tablename__ = 'codif_of_language'
     code_of_lang = db.Column(db.Integer, primary_key=True)
-    name_of_lang = db.Column(db.VARCHAR(15), nullable=False)
+    name_of_lang = db.Column(db.VARCHAR(50), nullable=False)
 
 
 class CodifOfProficiencyLang(db.Model):
     __tablename__ = 'codif_of_proficiency_lang'
     code_of_profic = db.Column(db.Integer, primary_key=True)
-    name_of_profic = db.Column(db.VARCHAR(15), nullable=False)
+    name_of_profic = db.Column(db.VARCHAR(50), nullable=False)
     for_lan_know = db.relationship('ForeignLanKnowledge', lazy='dynamic')
 
 
@@ -147,20 +151,22 @@ class Client(db.Model):
     __tablename__ = 'clients'
     code_of_client = db.Column(db.Integer, primary_key=True)
     code_of_type_of_client = db.Column(db.Integer, nullable=False)  # 1 - legal, 2 - natural
-    e_mail = db.Column(db.VARCHAR(30))
-    address = db.Column(db.VARCHAR(80), nullable=False)
+    e_mail = db.Column(db.VARCHAR(70))
+    address = db.Column(db.VARCHAR, nullable=False)
     telephone = db.Column(db.VARCHAR(15), nullable=False)
     code_of_emp = db.Column(db.Integer, db.ForeignKey('employees.code_of_employee'))  # **
     doc_of_client = db.relationship('DocumOfClient', lazy='dynamic')
     log = db.relationship('Log', lazy='dynamic')
+    registration = db.relationship('Country', secondary=Registration, lazy='dynamic')
+    proxy = db.relationship('Trustee', secondary=Proxy, lazy='dynamic')
 
 
 class DocumOfClient(db.Model):
     __tablename__ = 'docums_of_client'
-    num_and_ser_of_doc = db.Column(db.Integer, primary_key=True)
+    num_of_doc = db.Column(db.BigInteger, primary_key=True)
     code_of_client = db.Column(db.Integer, db.ForeignKey('clients.code_of_client'))  # **
-    name_of_doc = db.Column(db.VARCHAR(30), nullable=False)
-    application = db.relationship('Application', lazy='dynamic')
+    name_of_doc = db.Column(db.VARCHAR, nullable=False)
+    applications = db.relationship('Application', lazy='dynamic')
 
 
 class Log(db.Model):
@@ -172,32 +178,37 @@ class Log(db.Model):
     content = db.Column(db.VARCHAR)
     form = db.relationship('Form', lazy='dynamic')
     participant = db.relationship('Participant', lazy='dynamic')
-    dbregistration = db.relationship('Application', secondary=Log_to_applic,  lazy='dynamic')
+    registration = db.relationship('Application', secondary=Log_to_applic,  lazy='dynamic')
 
 
 class Trustee(db.Model):
     __tablename__ = 'trustee'
-    num_and_ser_of_doc = db.Column(db.Integer, primary_key=True)
+    num_of_doc = db.Column(db.BigInteger, primary_key=True)
     date_of_regist_of_trust = db.Column(db.DATE, nullable=False)
-    place_of_regist_of_trust = db.Column(db.VARCHAR(30), nullable=False)
+    place_of_regist = db.Column(db.VARCHAR, nullable=False)
 
 
 class Form(db.Model):
     __tablename__ = 'forms'
     code_of_form = db.Column(db.Integer, primary_key=True)
     num_of_form = db.Column(db.Integer, nullable=False)
-    type_of_form = db.Column(db.VARCHAR(40), nullable=False)
+    type_of_form = db.Column(db.VARCHAR, nullable=False)
     num_of_not_act = db.Column(db.Integer, db.ForeignKey('logs.num_of_act'))  # **
 
 
 class Participant(db.Model):
     __tablename__ = 'participants'
-    num_and_ser_of_doc = db.Column(db.Integer, primary_key=True)
-    surname = db.Column(db.VARCHAR(30), nullable=False)
-    first_name = db.Column(db.VARCHAR(20), nullable=False)
-    farther_name = db.Column(db.VARCHAR(30), nullable=True)
-    address = db.Column(db.VARCHAR(80), nullable=False)
+    num_of_doc = db.Column(db.BigInteger, primary_key=True)
+    surname = db.Column(db.VARCHAR(50), nullable=False)
+    first_name = db.Column(db.VARCHAR(50), nullable=False)
+    farther_name = db.Column(db.VARCHAR(50), nullable=True)
+    address = db.Column(db.VARCHAR, nullable=False)
     num_of_not_act = db.Column(db.Integer, db.ForeignKey('logs.num_of_act'))  # **
+
+
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -206,36 +217,41 @@ def login():
     if request.method == 'POST' and form.validate_on_submit():
         username = form.username.data
         password = form.password.data.encode()
-        hash_passw = hashlib.md5(password)
+        hash_passw = hashlib.sha256(password)
         user = User.query.filter(User.username == username).first()
         passw = User.query.filter(User.hash_pass == hash_passw)
         if user and passw:
             print('Ouu')
             login_user(user, remember=form.remember.data)
             session['username'] = form.username.data
+            flash('Logged in successfully.')
             # return redirect('/show', 302)
 
-    return render_template('index.html', name=session.get('name'), form=form, known=session.get('known', False))
+    return render_template('login.html', name=session.get('name'), form=form, known=session.get('known', False))
 
 
 @app.route('/main', methods=['GET', 'POST'])
 @login_required
-def index():
+def main():
     form = NameForm()
+    user_id = session['user_id']
+    if load_user(user_id) == 7:
+        return 'You are my admin'
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.name.data).first()
-        if user is None:
-            session['known'] = False
-        else:
-            session['known'] = True
-        session['name'] = form.name.data
-        return redirect(url_for('index'))
-    return render_template('index.html', form=form, name=session.get('name'), known=session.get('known', False))
+        user_id = session['user_id']
+        if user_id:
+            session['name'] = form.name.data
+            print('boom')
+    return render_template('for_all.html', form=form)
 
 
-@app.route('/logout', methods=['GET', 'POST'])
+@app.route('/logout/')
+@login_required
 def logout():
-    form = ServiceForm(request.form)
+    logout_user()
+    flash("You have been logged out.")
+    return redirect(url_for('login'))
 
 
 @app.route('/service', methods=['GET', 'POST'])
@@ -330,8 +346,10 @@ def page_not_found(er):
 @login_required
 def show():
     form = NameForm
-    user_name = session['user_id']
-    return 'Wow, it is you, ' + user_name + '! Hello'
+    # if load_user():
+    #    print('wuhuu')
+    user_id = session['user_id']
+    return 'Wow, it is you, ' + user_id + '! Hello'
 
 
 if __name__ == '__main__':
