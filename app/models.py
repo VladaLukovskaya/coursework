@@ -7,6 +7,8 @@ class Role(db.Model):
     name = db.Column(db.String(64), unique=True)
     users = db.relationship('User', backref='role', lazy='dynamic')
 
+    def __str__(self):
+        return str(self.name)
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'

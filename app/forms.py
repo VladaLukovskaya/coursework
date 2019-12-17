@@ -4,8 +4,8 @@ from flask_wtf import FlaskForm
 
 
 class LoginForm(FlaskForm):
-    username = StringField('Логин', [Length(min=5, max=20), validators.DataRequired()])
-    password = PasswordField('Пароль', [Length(min=8, max=30), validators.DataRequired()])
+    username = StringField('Логин', [Length(min=2, max=20), validators.DataRequired()])
+    password = PasswordField('Пароль', [Length(min=6, max=30), validators.DataRequired()])
     remember = BooleanField('Запомнить меня', default=False)
     submit = SubmitField('Войти')
 
@@ -27,13 +27,13 @@ class ApplicationForm(FlaskForm):
 
 
 class EmployeeForm(FlaskForm):
-    surname = StringField('Фамилия', validators.DataRequired())
-    first_name = StringField('Имя', validators.DataRequired())
+    surname = StringField('Фамилия')
+    first_name = StringField('Имя')
     farther_name = StringField('Отчество')
-    address = StringField('Адрес', validators.DataRequired())
-    sex = IntegerField('Пол', validators.DataRequired())
-    telephone = StringField('Телефон', validators.DataRequired())
-    type_of_employee = StringField('Должность', validators.DataRequired())
+    address = StringField('Адрес')
+    sex = IntegerField('Пол')
+    telephone = StringField('Телефон')
+    type_of_employee = StringField('Должность')
     number_of_licence = IntegerField('Номер лицензии (при наличии)')
     date_of_lic_issuance = DateField('Дата выдачи лицензии (при наличии)')
     submit = SubmitField('Ввести')
@@ -127,4 +127,14 @@ class ParticipantFrom(FlaskForm):
     num_of_not_act = IntegerField('Номер нотариального действия', )
     submit = SubmitField('Ввести')
 
-
+class RegForm(FlaskForm):
+    username = StringField('Username or email', [validators.Length(min=4, max=25),
+                                                 validators.DataRequired()])
+    email = StringField('E-mail', [validators.DataRequired("Enter a valid email address"),
+                                   validators.Email("Enter a valid email address")])
+    password = PasswordField('Password', [Length(min=3, max=25),
+                                          validators.DataRequired(),
+                                          # check_password,
+                                          validators.EqualTo('confirm', message='Passwords must match')])
+    confirm = PasswordField('Repeat Password')
+    submit = SubmitField("Submit")

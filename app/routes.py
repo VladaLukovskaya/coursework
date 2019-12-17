@@ -30,21 +30,57 @@ def login():
             print('Ouu')
             login_user(user, remember=form.remember.data)
             session['username'] = form.username.data
-            return redirect('/show', 302)
+            return redirect('/main', 302)
 
     return render_template('login.html', name=session.get('name'), form=form, known=session.get('known', False))
+
+
+
+@app.route('/registry', methods=['GET', 'POST'])
+def registry():
+    form = RegForm(request.form)
+    if request.method == 'POST' and form.validate():
+
+        username = form.username.data
+        password = form.password.data.encode()
+        email = form.email.data
+        salt = username.encode()
+        hashed_password = hashlib.md5(password + salt).hexdigest()
+        print(username, password, hashed_password)
+        user = User()
+        user.username = username
+        user.hash_pass = hashed_password
+        db.session.add(user)
+        db.session.commit()
+    return render_template('form.html', block_title='Register', form=form)
 
 
 @app.route('/main', methods=['GET', 'POST'])
 @login_required
 def main():
-    form = EmployeeForm()
+    emp = Employee.query.filter_by()
+    form = EmployeeForm(request.form)
+    if request.method == 'POST' and form.validate():
+        employee = EmployeeForm(
+            code_of_employee=form.code_of_employee.data,
+            surname = form.surname.data,
+            first_name = form.first_name.data,
+            farther_name = form.farther_name.data,
+            address = form.address.data,
+            sex =form.sex.data,
+            telephone = form.telephone.data,
+            type_of_employee = form.type_of_employee.data,
+            number_of_licence = form.number_of_licence.data,
+            date_of_lic_issuance = form.date_of_lic_issuance.data,
+        )
+        db.session.add(employee)
+        db.session.commit()
     # user_id = session['user_id']
     # if load_user(user_id) == 1:
         #print('adm')
     # if form.validate_on_submit():
     # session['name'] = form.name.data
-    print('boom')
+        print('boom')
     return render_template('for_all.html', form=form)
 
 
@@ -55,101 +91,3 @@ def logout():
     flash("You have been logged out.")
     return redirect(url_for('login'))
 
-
-@app.route('/service', methods=['GET', 'POST'])
-@login_required
-def service():
-    form = ServiceForm(request.form)
-
-
-@app.route('/application', methods=['GET', 'POST'])
-@login_required
-def application():
-    form = ApplicationForm(request.form)
-
-
-@app.route('/employee', methods=['GET', 'POST'])
-@login_required
-def employee():
-    form = EmployeeForm(request.form)
-
-
-@app.route('/natperson', methods=['GET', 'POST'])
-def natperson():
-    form = NatPersonForm(request.form)
-
-
-@app.route('/legperson', methods=['GET', 'POST'])
-def legperson():
-    form = LegPersonForm(request.form)
-
-
-@app.route('/country', methods=['GET', 'POST'])
-def country():
-    form = CountryForm(request.form)
-
-
-@app.route('/lanknow', methods=['GET', 'POST'])
-def lanknow():
-    form = ForLanKnowForm(request.form)
-
-
-@app.route('/codeoflan', methods=['GET', 'POST'])
-def codeoflan():
-    form = CodOfLanForm(request.form)
-
-
-@app.route('/codeofprof', methods=['GET', 'POST'])
-def codeofprof():
-    form = CodOfProfLanForm(request.form)
-
-
-@app.route('/client', methods=['GET', 'POST'])
-def client():
-    form = ClientForm(request.form)
-
-
-@app.route('/docofclient', methods=['GET', 'POST'])
-def docofclient():
-    form = DocOfClientForm(request.form)
-
-
-@app.route('/log', methods=['GET', 'POST'])
-def log():
-    form = LogForm(request.form)
-
-
-@app.route('/trustee', methods=['GET', 'POST'])
-def trustee():
-    form = TrusteeForm(request.form)
-
-
-@app.route('/blank', methods=['GET', 'POST'])
-def blank():
-    form = BlankForm(request.form)
-
-
-@app.route('/partic', methods=['GET', 'POST'])
-def partic():
-    form = ParticipantFrom(request.form)
-
-
-@app.shell_context_processor
-def make_shell_context():
-    return dict(db=db, User=User, Role=Role)
-
-
-@app.errorhandler(404)
-def page_not_found(er):
-    return render_template('404.html'), 404
-
-
-@app.route('/show', methods=['GET', 'POST'])
-@login_required
-def show():
-    form = ClientForm()
-    # if load_user():
-    #    print('wuhuu')
-    user_id = session['user_id']
-    # return 'Wow, it is you, ' + user_id + '! Hello'
-    return render_template('for_all.html', form=form)
