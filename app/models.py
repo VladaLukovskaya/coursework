@@ -1,33 +1,5 @@
-from flask import Flask, render_template, session, redirect, url_for, request, flash
-from flask_bootstrap import Bootstrap
-from flask_sqlalchemy import SQLAlchemy
-from config import Config
-from flask_migrate import Migrate
-from forms import NameForm, LoginForm, ServiceForm, ApplicationForm, EmployeeForm, NatPersonForm, LegPersonForm, \
-    CountryForm, ForLanKnowForm, CodOfLanForm, CodOfProfLanForm, ClientForm, DocOfClientForm, LogForm, TrusteeForm, \
-    BlankForm, ParticipantFrom
-# from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import login_required, login_user, logout_user, UserMixin, LoginManager
-import hashlib
-
-app = Flask(__name__)
-app.config.from_object(Config)
-
-login_manager = LoginManager(app)
-login_manager.init_app(app)
-login_manager.login_view = 'login'
-login_manager.session_protection = 'strong'
-
-bootstrap = Bootstrap(app)
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-
-
-@login_manager.user_loader
-def load_user(user_id):
-    # return User.get(user_id)
-    return User.query.filter(User.id == user_id).first()
-
+from app import db
+from flask_login import UserMixin
 
 class Role(db.Model):
     __tablename__ = 'roles'
@@ -73,8 +45,8 @@ class Service(db.Model):
     name = db.Column(db.VARCHAR, unique=True, nullable=False)
     cost = db.Column(db.Integer)
     addition_docum = db.Column(db.VARCHAR, nullable=True)
-    application = db.relationship('Application', lazy='dynamic')
-    log = db.relationship('Log', lazy='dynamic')
+    application = db.relationship('Application', backref='Код услуги', lazy='dynamic')
+    log = db.relationship('Log', backref='Код услуги', lazy='dynamic')
 
 
 class Application(db.Model):
@@ -98,9 +70,9 @@ class Employee(db.Model):
     type_of_employee = db.Column(db.VARCHAR(20), nullable=False)
     number_of_licence = db.Column(db.Integer, nullable=True)
     date_of_lic_issuance = db.Column(db.DATE, nullable=True)
-    application = db.relationship('Application', lazy='dynamic')
-    for_lan_know = db.relationship('ForeignLanKnowledge', lazy='dynamic')
-    client = db.relationship('Client', lazy='dynamic')
+    application = db.relationship('Application', backref='Код сотрудника', lazy='dynamic')
+    for_lan_know = db.relationship('ForeignLanKnowledge', backref='Код сотрудника', lazy='dynamic')
+    client = db.relationship('Client', backref='Код сотрудника', lazy='dynamic')
 
 
 class NaturalPerson(db.Model):
@@ -144,7 +116,7 @@ class CodifOfProficiencyLang(db.Model):
     __tablename__ = 'codif_of_proficiency_lang'
     code_of_profic = db.Column(db.Integer, primary_key=True)
     name_of_profic = db.Column(db.VARCHAR(50), nullable=False)
-    for_lan_know = db.relationship('ForeignLanKnowledge', lazy='dynamic')
+    for_lan_know = db.relationship('ForeignLanKnowledge', backref='Код знания языка', lazy='dynamic')
 
 
 class Client(db.Model):
@@ -155,8 +127,8 @@ class Client(db.Model):
     address = db.Column(db.VARCHAR, nullable=False)
     telephone = db.Column(db.VARCHAR(15), nullable=False)
     code_of_emp = db.Column(db.Integer, db.ForeignKey('employees.code_of_employee'))  # **
-    doc_of_client = db.relationship('DocumOfClient', lazy='dynamic')
-    log = db.relationship('Log', lazy='dynamic')
+    doc_of_client = db.relationship('DocumOfClient', backref='Код клиента', lazy='dynamic')
+    log = db.relationship('Log', backref='Код клиента', lazy='dynamic')
     registration = db.relationship('Country', secondary=Registration, lazy='dynamic')
     proxy = db.relationship('Trustee', secondary=Proxy, lazy='dynamic')
 
@@ -166,7 +138,7 @@ class DocumOfClient(db.Model):
     num_of_doc = db.Column(db.BigInteger, primary_key=True)
     code_of_client = db.Column(db.Integer, db.ForeignKey('clients.code_of_client'))  # **
     name_of_doc = db.Column(db.VARCHAR, nullable=False)
-    applications = db.relationship('Application', lazy='dynamic')
+    applications = db.relationship('Application', backref='Номер документа клиента', lazy='dynamic')
 
 
 class Log(db.Model):
@@ -177,7 +149,7 @@ class Log(db.Model):
     code_of_service = db.Column(db.Integer, db.ForeignKey('services.code_of_service'))  # **
     content = db.Column(db.VARCHAR)
     form = db.relationship('Form', lazy='dynamic')
-    participant = db.relationship('Participant', lazy='dynamic')
+    participant = db.relationship('Participant', backref='№ нотариального действия', lazy='dynamic')
     registration = db.relationship('Application', secondary=Log_to_applic,  lazy='dynamic')
 
 
@@ -204,153 +176,3 @@ class Participant(db.Model):
     farther_name = db.Column(db.VARCHAR(50), nullable=True)
     address = db.Column(db.VARCHAR, nullable=False)
     num_of_not_act = db.Column(db.Integer, db.ForeignKey('logs.num_of_act'))  # **
-
-
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    form = LoginForm(request.form)
-    if request.method == 'POST' and form.validate_on_submit():
-        username = form.username.data
-        password = form.password.data.encode()
-        hash_passw = hashlib.sha256(password)
-        user = User.query.filter(User.username == username).first()
-        passw = User.query.filter(User.hash_pass == hash_passw)
-        if user and passw:
-            print('Ouu')
-            login_user(user, remember=form.remember.data)
-            session['username'] = form.username.data
-            flash('Logged in successfully.')
-            # return redirect('/show', 302)
-
-    return render_template('login.html', name=session.get('name'), form=form, known=session.get('known', False))
-
-
-@app.route('/main', methods=['GET', 'POST'])
-@login_required
-def main():
-    form = NameForm()
-    user_id = session['user_id']
-    if load_user(user_id) == 7:
-        return 'You are my admin'
-    if form.validate_on_submit():
-        user = User.query.filter_by(username=form.name.data).first()
-        user_id = session['user_id']
-        if user_id:
-            session['name'] = form.name.data
-            print('boom')
-    return render_template('for_all.html', form=form)
-
-
-@app.route('/logout/')
-@login_required
-def logout():
-    logout_user()
-    flash("You have been logged out.")
-    return redirect(url_for('login'))
-
-
-@app.route('/service', methods=['GET', 'POST'])
-@login_required
-def service():
-    form = ServiceForm(request.form)
-
-
-@app.route('/application', methods=['GET', 'POST'])
-@login_required
-def application():
-    form = ApplicationForm(request.form)
-
-
-@app.route('/employee', methods=['GET', 'POST'])
-@login_required
-def employee():
-    form = EmployeeForm(request.form)
-
-
-@app.route('/natperson', methods=['GET', 'POST'])
-def natperson():
-    form = NatPersonForm(request.form)
-
-
-@app.route('/legperson', methods=['GET', 'POST'])
-def legperson():
-    form = LegPersonForm(request.form)
-
-
-@app.route('/country', methods=['GET', 'POST'])
-def country():
-    form = CountryForm(request.form)
-
-
-@app.route('/lanknow', methods=['GET', 'POST'])
-def lanknow():
-    form = ForLanKnowForm(request.form)
-
-
-@app.route('/codeoflan', methods=['GET', 'POST'])
-def codeoflan():
-    form = CodOfLanForm(request.form)
-
-
-@app.route('/codeofprof', methods=['GET', 'POST'])
-def codeofprof():
-    form = CodOfProfLanForm(request.form)
-
-
-@app.route('/client', methods=['GET', 'POST'])
-def client():
-    form = ClientForm(request.form)
-
-
-@app.route('/docofclient', methods=['GET', 'POST'])
-def docofclient():
-    form = DocOfClientForm(request.form)
-
-
-@app.route('/log', methods=['GET', 'POST'])
-def log():
-    form = LogForm(request.form)
-
-
-@app.route('/trustee', methods=['GET', 'POST'])
-def trustee():
-    form = TrusteeForm(request.form)
-
-
-@app.route('/blank', methods=['GET', 'POST'])
-def blank():
-    form = BlankForm(request.form)
-
-
-@app.route('/partic', methods=['GET', 'POST'])
-def partic():
-    form = ParticipantFrom(request.form)
-
-
-@app.shell_context_processor
-def make_shell_context():
-    return dict(db=db, User=User, Role=Role)
-
-
-@app.errorhandler(404)
-def page_not_found(er):
-    return render_template('404.html'), 404
-
-
-@app.route('/show', methods=['GET', 'POST'])
-@login_required
-def show():
-    form = NameForm
-    # if load_user():
-    #    print('wuhuu')
-    user_id = session['user_id']
-    return 'Wow, it is you, ' + user_id + '! Hello'
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
