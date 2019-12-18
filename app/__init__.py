@@ -1,4 +1,4 @@
-from flask_admin import Admin
+from flask_admin import Admin, AdminIndexView, expose, BaseView
 from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
@@ -23,17 +23,21 @@ bootstrap = Bootstrap(app)
 
 from app import routes, models
 
-
 class Controller(ModelView):
     def is_accessible(self):
         if current_user.role.name == 'user':
             self.can_delete = False
+
             return False
         return current_user.is_authenticated
     def not_aut(self):
         return "please Login"
 
-admin = Admin(app, name='Меню для админа', template_mode='bootstrap3')
+admin = Admin(app,
+              name='Меню для админа',
+              template_mode='bootstrap3',
+              url='/admin')
+# admin.add_view(FirstView())
 admin.add_view(Controller(models.Service, db.session, name='Услуги'))
 admin.add_view(Controller(models.Application, db.session, name=''))
 admin.add_view(Controller(models.Employee, db.session, name='Сотрудники'))
@@ -51,3 +55,4 @@ admin.add_view(Controller(models.Form, db.session, name=''))
 admin.add_view(Controller(models.Participant, db.session, name=''))
 admin.add_view(Controller(models.Role, db.session, name='Роли'))
 admin.add_view(Controller(models.User, db.session, name='Юзеры'))
+

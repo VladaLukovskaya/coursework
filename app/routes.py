@@ -43,9 +43,9 @@ def registry():
 
         username = form.username.data
         password = form.password.data.encode()
-        email = form.email.data
-        salt = username.encode()
-        hashed_password = hashlib.md5(password + salt).hexdigest()
+        email = form.email.data  # delete this
+        salt = username.encode()  # seriously?
+        hashed_password = hashlib.md5(password + salt).hexdigest()  # the same
         print(username, password, hashed_password)
         user = User()
         user.username = username
@@ -64,11 +64,11 @@ def main():
         employee = EmployeeForm(
             code_of_employee=form.code_of_employee.data,
             surname = form.surname.data,
-            first_name = form.first_name.data,
-            farther_name = form.farther_name.data,
-            address = form.address.data,
-            sex =form.sex.data,
-            telephone = form.telephone.data,
+            first_name=form.first_name.data,
+            farther_name=form.farther_name.data,
+            address=form.address.data,
+            sex=form.sex.data,
+            telephone=form.telephone.data,
             type_of_employee = form.type_of_employee.data,
             number_of_licence = form.number_of_licence.data,
             date_of_lic_issuance = form.date_of_lic_issuance.data,
@@ -91,3 +91,14 @@ def logout():
     flash("You have been logged out.")
     return redirect(url_for('login'))
 
+@app.route('/add_form/')
+@login_required
+def add_form():
+    form = EmployeeForm(request.form)
+    if request.method == 'POST' and form.validate():
+        print(form.sex.data)
+        # employee = Employee()
+        # employee.sex = form.sex.data
+        # db.session.add(employee)
+        # db.session.commit()
+    return render_template('form.html', form=form)
