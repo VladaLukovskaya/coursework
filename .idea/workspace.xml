@@ -2,11 +2,31 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="003d85f2-e317-4f4b-9d21-96a598bb27ed" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/templates/show.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/show_app_log.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/show_applic.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/show_blank.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/show_client.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/show_client_doc.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/show_country.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/show_employee.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/show_lan_code.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/show_lan_know.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/show_legal.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/show_log.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/show_natural.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/show_partic.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/show_prof_cod.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/show_proxy.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/show_regist.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/show_service.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/show_trustee.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/show.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/show.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -67,16 +87,6 @@
         <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
         <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
       </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="notary_office@localhost" type="feb32156:DbDataSourceImpl" />
-        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="notary_office: database" type="162271b6:PgImplModel$Database" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
-        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="users: table" type="69fad909:PgImplModel$LocalTable" />
-      </path>
     </expand>
     <select />
   </component>
@@ -93,7 +103,9 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1TW3wCf00fBapNEG8YI4CQPm9tK" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -113,18 +125,6 @@
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/static" />
     </key>
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
   </component>
   <component name="RunManager" selected="Python.server">
     <configuration name="bla" type="PythonConfigurationType" factoryName="Python" temporary="true">
@@ -200,7 +200,7 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="$PROJECT_DIR$/../Coursework/venv/bin/python" />
+      <option name="SDK_HOME" value="$USER_HOME$/PycharmProjects/coursework/venv/bin/python" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -245,6 +245,14 @@
       <option name="launchJavascriptDebuger" value="false" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Flask server.coursework" />
+      <item itemvalue="Flask server.Flask (app/server.py)" />
+      <item itemvalue="Python.bla" />
+      <item itemvalue="Python.forms" />
+      <item itemvalue="Python.routes" />
+      <item itemvalue="Python.server" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.server" />
@@ -256,13 +264,15 @@
     </recent_temporary>
   </component>
   <component name="ServiceViewManager">
-    <option name="allServicesViewState">
-      <serviceView>
-        <treeState>
-          <expand />
-          <select />
-        </treeState>
-      </serviceView>
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
     </option>
   </component>
   <component name="SvnConfiguration">
@@ -290,6 +300,7 @@
       <workItem from="1576066161885" duration="21274000" />
       <workItem from="1576396819680" duration="38289000" />
       <workItem from="1576596305100" duration="16501000" />
+      <workItem from="1576674173452" duration="12566000" />
     </task>
     <servers />
   </component>
@@ -314,30 +325,34 @@
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
     <state x="669" y="173" width="642" height="768" key="#app/70.27.1850.1053@70.27.1850.1053" timestamp="1576594698212" />
-    <state x="895" y="210" width="800" height="684" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1576424229141">
+    <state x="895" y="210" width="800" height="684" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1576679269324">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
-    <state x="895" y="210" width="800" height="684" key="#com.intellij.execution.impl.EditConfigurationsDialog/70.27.1850.1053@70.27.1850.1053" timestamp="1576424229141" />
+    <state x="895" y="210" width="800" height="684" key="#com.intellij.execution.impl.EditConfigurationsDialog/70.27.1850.1053@70.27.1850.1053" timestamp="1576679269324" />
+    <state x="700" y="358" width="579" height="397" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1576679134241">
+      <screen x="70" y="27" width="1850" height="1053" />
+    </state>
+    <state x="700" y="358" width="579" height="397" key="#com.intellij.fileTypes.FileTypeChooser/70.27.1850.1053@70.27.1850.1053" timestamp="1576679134241" />
     <state x="728" y="302" width="524" height="509" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1576221720960">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
     <state x="728" y="302" width="524" height="509" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/70.27.1850.1053@70.27.1850.1053" timestamp="1576221720960" />
-    <state width="1804" height="187" key="GridCell.Tab.0.bottom" timestamp="1576595881632">
+    <state width="1804" height="187" key="GridCell.Tab.0.bottom" timestamp="1576685792541">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
-    <state width="1804" height="187" key="GridCell.Tab.0.bottom/70.27.1850.1053@70.27.1850.1053" timestamp="1576595881632" />
-    <state width="1804" height="187" key="GridCell.Tab.0.center" timestamp="1576595881629">
+    <state width="1804" height="187" key="GridCell.Tab.0.bottom/70.27.1850.1053@70.27.1850.1053" timestamp="1576685792541" />
+    <state width="1804" height="187" key="GridCell.Tab.0.center" timestamp="1576685792539">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
-    <state width="1804" height="187" key="GridCell.Tab.0.center/70.27.1850.1053@70.27.1850.1053" timestamp="1576595881629" />
-    <state width="1804" height="187" key="GridCell.Tab.0.left" timestamp="1576595881627">
+    <state width="1804" height="187" key="GridCell.Tab.0.center/70.27.1850.1053@70.27.1850.1053" timestamp="1576685792539" />
+    <state width="1804" height="187" key="GridCell.Tab.0.left" timestamp="1576685792537">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
-    <state width="1804" height="187" key="GridCell.Tab.0.left/70.27.1850.1053@70.27.1850.1053" timestamp="1576595881627" />
-    <state width="1804" height="187" key="GridCell.Tab.0.right" timestamp="1576595881631">
+    <state width="1804" height="187" key="GridCell.Tab.0.left/70.27.1850.1053@70.27.1850.1053" timestamp="1576685792537" />
+    <state width="1804" height="187" key="GridCell.Tab.0.right" timestamp="1576685792540">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
-    <state width="1804" height="187" key="GridCell.Tab.0.right/70.27.1850.1053@70.27.1850.1053" timestamp="1576595881631" />
+    <state width="1804" height="187" key="GridCell.Tab.0.right/70.27.1850.1053@70.27.1850.1053" timestamp="1576685792540" />
     <state width="908" height="336" key="GridCell.Tab.1.bottom" timestamp="1575830124460">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
@@ -354,10 +369,10 @@
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
     <state width="908" height="336" key="GridCell.Tab.1.right/70.27.1850.1053@70.27.1850.1053" timestamp="1575830124459" />
-    <state width="263" height="500" key="HiddenNamespacesPopup" timestamp="1576423990015">
+    <state width="263" height="500" key="HiddenNamespacesPopup" timestamp="1576674180498">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
-    <state width="263" height="500" key="HiddenNamespacesPopup/70.27.1850.1053@70.27.1850.1053" timestamp="1576423990015" />
+    <state width="263" height="500" key="HiddenNamespacesPopup/70.27.1850.1053@70.27.1850.1053" timestamp="1576674180498" />
     <state x="867" y="450" width="367" height="244" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1" timestamp="1576423709466">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
@@ -366,21 +381,21 @@
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
     <state x="578" y="211" width="824" height="691" key="com.intellij.database.dbimport.ImportDialog/70.27.1850.1053@70.27.1850.1053" timestamp="1576423703194" />
-    <state x="635" y="368" key="com.intellij.ide.util.TipDialog" timestamp="1576396863243">
+    <state x="635" y="368" key="com.intellij.ide.util.TipDialog" timestamp="1576674174097">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
-    <state x="635" y="368" key="com.intellij.ide.util.TipDialog/70.27.1850.1053@70.27.1850.1053" timestamp="1576396863243" />
+    <state x="635" y="368" key="com.intellij.ide.util.TipDialog/70.27.1850.1053@70.27.1850.1053" timestamp="1576674174097" />
     <state x="658" y="259" width="672" height="678" key="search.everywhere.popup" timestamp="1576421521109">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
     <state x="658" y="259" width="672" height="678" key="search.everywhere.popup/70.27.1850.1053@70.27.1850.1053" timestamp="1576421521109" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/coursework$context.coverage" NAME="context Coverage Results" MODIFIED="1573566973001" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/coursework$app.coverage" NAME="server Coverage Results" MODIFIED="1576595298175" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/coursework$Flask____init___py_.coverage" NAME="Flask (__init__.py) Coverage Results" MODIFIED="1576593065538" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
-    <SUITE FILE_PATH="coverage/coursework$server.coverage" NAME="server Coverage Results" MODIFIED="1576673698869" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/coursework$bla.coverage" NAME="bla Coverage Results" MODIFIED="1576044859848" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/coursework$Flask__app_py_.coverage" NAME="Flask (app.py) Coverage Results" MODIFIED="1575833539898" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/coursework$server.coverage" NAME="server Coverage Results" MODIFIED="1576685792516" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/coursework$context.coverage" NAME="context Coverage Results" MODIFIED="1573566973001" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/coursework$bla.coverage" NAME="bla Coverage Results" MODIFIED="1576044859848" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/coursework$Flask____init___py_.coverage" NAME="Flask (__init__.py) Coverage Results" MODIFIED="1576593065538" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
 </project>

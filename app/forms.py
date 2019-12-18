@@ -11,18 +11,18 @@ class LoginForm(FlaskForm):
 
 
 class ServiceForm(FlaskForm):
-    name = StringField('Название', validators.DataRequired())
-    cost = IntegerField('Стоимость', validators.DataRequired())
+    name = StringField('Название')
+    cost = IntegerField('Стоимость')
     addition_doc = StringField('Дополнительные документы')
     submit = SubmitField('Ввести')
 
 
 class ApplicationForm(FlaskForm):
-    num_of_applic = IntegerField('Номер заявки', validators.DataRequired())
-    code_of_employee = IntegerField('Код сотрудника', validators.DataRequired())
-    code_of_service = IntegerField('Код услуги', validators.DataRequired())
-    date_of_record = DateField('Дата составления', validators.DataRequired())
-    num_and_ser_of_doc = IntegerField('Номер и серия документа', validators.DataRequired())
+    num_of_applic = IntegerField('Номер заявки')
+    code_of_employee = IntegerField('Код сотрудника')
+    code_of_service = IntegerField('Код услуги')
+    date_of_record = DateField('Дата составления')
+    num_of_doc = IntegerField('Номер и серия документа')
     submit = SubmitField('Ввести')
 
 
@@ -40,92 +40,114 @@ class EmployeeForm(FlaskForm):
 
 
 class NatPersonForm(FlaskForm):
-    surname = StringField('Фамилия', validators.DataRequired())
-    first_name = StringField('Имя', validators.DataRequired())
+    cl_code = IntegerField('Код клиента')
+    surname = StringField('Фамилия')
+    first_name = StringField('Имя')
     farther_name = StringField('Отчество')
-    sex = IntegerField('Пол', validators.DataRequired())
-    date_of_birth = DateField('Дата рождения', validators.DataRequired())
-    data_of_marriage = DateField('Дата заключения брака', validators.DataRequired())
+    sex = IntegerField('Пол')
+    date_of_birth = DateField('Дата рождения')
+    data_of_marriage = DateField('Дата заключения брака')
     submit = SubmitField('Ввести')
 
 
 class LegPersonForm(FlaskForm):
-    name_of_client = StringField('Название', validators.DataRequired())
+    cl_code = IntegerField('Код клиента')
+    name_of_client = StringField('Название')
     submit = SubmitField('Ввести')
 
 
 class CountryForm(FlaskForm):
-    code_of_country = IntegerField('Код языка', )
-    name_of_country = StringField('Название языка', )
+    code_of_country = IntegerField('Код языка')
+    name_of_country = StringField('Название языка')
     submit = SubmitField('Ввести')
 
+
 class ForLanKnowForm(FlaskForm):
-    code_of_lang = IntegerField('Код языка', )
-    code_of_empl = IntegerField('Код сотрудника', )
-    code_of_knowl = IntegerField('Код знания', )
+    code_of_lang = IntegerField('Код языка')
+    code_of_empl = IntegerField('Код сотрудника')
+    code_of_knowl = IntegerField('Код знания')
     submit = SubmitField('Ввести')
 
 
 class CodOfLanForm(FlaskForm):
-    code_of_lang = IntegerField('Код языка', )
-    name_of_lang = IntegerField('Название языка', )
+    code_of_lang = IntegerField('Код языка')
+    name_of_lang = IntegerField('Название языка')
     submit = SubmitField('Ввести')
 
 
 class CodOfProfLanForm(FlaskForm):
-    code_of_profic = IntegerField('Код степени знания языка', )
-    name_of_profic = StringField('Наименование степени', )
+    code_of_profic = IntegerField('Код степени знания языка')
+    name_of_profic = StringField('Наименование степени')
     submit = SubmitField('Ввести')
 
 
 class ClientForm(FlaskForm):
-    code_of_type_of_client = IntegerField('Код типа лица', )
-    code_of_country = IntegerField('Код страны клиента', )
-    e_mail = StringField('Почта', )
-    address = StringField('Адрес', )
-    telephone = StringField('Телефон', )
-    code_of_emp = IntegerField('Код сотрудника, работающего с клиентом', )
+    code_of_type_of_client = IntegerField('Код типа лица')
+    code_of_country = IntegerField('Код страны клиента')
+    e_mail = StringField('Почта')
+    address = StringField('Адрес')
+    telephone = StringField('Телефон')
+    code_of_emp = IntegerField('Код сотрудника, работающего с клиентом')
     submit = SubmitField('Ввести')
 
 
 class DocOfClientForm(FlaskForm):
-    name_of_doc = StringField('Наименование документа', )
-    num_and_ser_of_doc = IntegerField('Номер и серия документа', )
-    code_of_client = IntegerField('Код клиента', )
+    name_of_doc = StringField('Наименование документа')
+    num_of_doc = IntegerField('Номер и серия документа')
+    code_of_client = IntegerField('Код клиента')
     submit = SubmitField('Ввести')
 
 
 class LogForm(FlaskForm):
-    num_of_act = IntegerField('Номер нотариального действия', )
-    date_of_issuance = DateField('Дата регистрации', )
-    code_of_client = IntegerField('Код клиента', )
-    code_of_service = IntegerField('Код услуги', )
+    num_of_act = IntegerField('Номер нотариального действия')
+    date_of_issuance = DateField('Дата регистрации')
+    code_of_client = IntegerField('Код клиента')
+    code_of_service = IntegerField('Код услуги')
     content = StringField('Содержание')
     submit = SubmitField('Ввести')
 
 
 class TrusteeForm(FlaskForm):
-    num_and_ser_of_doc = IntegerField('Номер и серия документа', )
-    date_of_regist_of_trust = DateField('Дата регистрации доверенности', )
-    place_of_regist_of_trust = StringField('Место регистрации', )
+    num_of_doc = IntegerField('Номер и серия документа')
+    date_of_regist_of_trust = DateField('Дата регистрации доверенности')
+    place_of_regist_of_trust = StringField('Место регистрации')
     submit = SubmitField('Ввести')
 
 
 class BlankForm(FlaskForm):
-    num_of_form = IntegerField('Номер бланка', )
-    type_of_form = StringField('Тип бланка', )
-    num_of_not_act = IntegerField('Номер нотариального действия', )
+    num_of_form = IntegerField('Номер бланка')
+    type_of_form = StringField('Тип бланка')
+    num_of_not_act = IntegerField('Номер нотариального действия')
     submit = SubmitField('Ввести')
 
 
 class ParticipantFrom(FlaskForm):
-    num_and_ser_of_doc = IntegerField('Номер и серия документа', )
-    surname = StringField('Фамилия', validators.DataRequired())
-    first_name = StringField('Имя', validators.DataRequired())
+    num_of_doc = IntegerField('Номер и серия документа')
+    surname = StringField('Фамилия')
+    first_name = StringField('Имя')
     farther_name = StringField('Отчество')
-    address = StringField('Адрес', )
-    num_of_not_act = IntegerField('Номер нотариального действия', )
+    address = StringField('Адрес')
+    num_of_not_act = IntegerField('Номер нотариального действия')
     submit = SubmitField('Ввести')
+
+
+class LogAppForm(FlaskForm):
+    num_of_act = IntegerField('№ нот. действия')
+    num_of_app = IntegerField('№ заявки')
+    submit = SubmitField('Ввести')
+
+
+class ProxyForm(FlaskForm):
+    cl_code = IntegerField('Код клиента')
+    trustee_doc = IntegerField('Номер документа доверенного лица')
+    submit = SubmitField('Ввести')
+
+
+class RegistForm(FlaskForm):
+    cl_code = IntegerField('Код клиента')
+    country_code = IntegerField('Код страны')
+    submit = SubmitField('Ввести')
+
 
 class RegForm(FlaskForm):
     username = StringField('Username or email', [validators.Length(min=4, max=25),

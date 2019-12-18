@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+    <div class="container">
+    <table  class="table">
+    <thead>
+    <tr>
+      <th scope="col">Номер документа</th>
+      <th scope="col">Код клиента</th>
+      <th scope="col">Название документа</th>
+    </tr>
+  </thead>
+        {% for line in info %}
+            <tr>
+                <th scope="row">{{ line.num_of_doc }}</th>
+                <td>{{ line.code_of_client }}</td>
+                <td>{{ line.name_of_doc }}</td>
+        {% endfor %}
+    </table>
+    </div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+    <div class="container">
+    <table  class="table">
+    <thead>
+    <tr>
+      <th scope="col">Код сотрудника</th>
+      <th scope="col">Фамилия</th>
+      <th scope="col">Имя</th>
+      <th scope="col">Отчество</th>
+      <th scope="col">Адрес</th>
+      <th scope="col">Пол</th>
+      <th scope="col">Телефон</th>
+      <th scope="col">Тип сотрудника</th>
+      <th scope="col">Номер лицензии (если есть)</th>
+      <th scope="col">Дата получения лицензии (если есть)</th>
+    </tr>
+  </thead>
+        {% for line in info %}
+            <tr>
+                <th scope="row">{{ line.code_of_employee }}</th>
+                <td>{{ line.surname }}</td>
+                <td>{{ line.first_name }}</td>
+                <td>{{ line.farther_name }}</td>
+                <td>{{ line.address }}</td>
+                <td>{{ line.sex }}</td>
+                <td>{{ line.telephone }}</td>
+                <td>{{ line.type_of_employee }}</td>
+                <td>{{ line.number_of_licence }}</td>
+                <td>{{ line.date_of_lic_issuance }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    </div>
+{% endblock %}

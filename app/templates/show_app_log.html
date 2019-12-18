@@ -6,16 +6,14 @@
     <table  class="table">
     <thead>
     <tr>
-      <th scope="col">Username</th>
-      <th scope="col">Hashed password</th>
-      <th scope="col">Role</th>
+      <th scope="col">№ нот. действия</th>
+      <th scope="col">№ заявки</th>
     </tr>
   </thead>
         {% for line in info %}
             <tr>
-                <th scope="row">{{ line.username }}</th>
-                <td>{{ line.hash_pass }}</td>
-                <td>{{ line.role }}</td>
+                <th scope="row">{{ line.num_of_act }}</th>
+                <td>{{ line.num_of_applic }}</td>
             </tr>
         {% endfor %}
     </table>

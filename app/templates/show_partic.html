@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+    <div class="container">
+    <table  class="table">
+    <thead>
+    <tr>
+      <th scope="col">Номер документа участника</th>
+      <th scope="col">Фамилия</th>
+      <th scope="col">Имя</th>
+      <th scope="col">Отчество</th>
+      <th scope="col">Адрес</th>
+      <th scope="col">№ нот. действия</th>
+    </tr>
+  </thead>
+        {% for line in info %}
+            <tr>
+                <th scope="row">{{ line.num_of_doc }}</th>
+                <td>{{ line.surname }}</td>
+                <td>{{ line.first_name }}</td>
+                <td>{{ line.farther_name }}</td>
+                <td>{{ line.address }}</td>
+                <td>{{ line.num_of_not_act }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    </div>
+{% endblock %}
