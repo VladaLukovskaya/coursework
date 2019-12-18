@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+    <div class="container">
+    <table  class="table">
+    <thead>
+    <tr>
+      <th scope="col">username</th>
+      <th scope="col">hash_pass</th>
+      <th scope="col">role</th>
+    </tr>
+  </thead>
+        {% for line in info %}
+            <tr>
+                <th scope="row">{{ line.username }}</th>
+                <td>{{ line.hash_pass }}</td>
+                <td>{{ line.role }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    </div>
+{% endblock %}

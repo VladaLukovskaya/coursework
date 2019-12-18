@@ -102,3 +102,10 @@ def add_form():
         # db.session.add(employee)
         # db.session.commit()
     return render_template('form.html', form=form)
+
+@app.route('/show_form/')
+@login_required
+def show_form():
+    emppoyee = User.query.all()
+    print(emppoyee)
+    return render_template('show.html', info=emppoyee)
