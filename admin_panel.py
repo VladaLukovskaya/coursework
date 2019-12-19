@@ -1,4 +1,6 @@
 from flask_admin import Admin
+# from flask_admin.base import MenuLink
+from flask_admin.menu import MenuLink
 from flask_admin.contrib.sqla import ModelView
 from app.server import app
 from app.server import Service, Application, Employee, NaturalPerson, LegalPerson, Country, ForeignLanKnowledge, \
@@ -28,4 +30,6 @@ admin.add_view(ModelView(User, db.session))
 admin.add_view(ModelView(Registration, db.session))
 admin.add_view(ModelView(Proxy, db.session))
 admin.add_view(ModelView(Log_to_applic, db.session))
-
+# admin.add_link(MenuLink(name='Выход', url='127.0.0.0.1:5000/logout/'))
+admin.add_link(MenuLink(name='Logout', url='main.home'))
+# admin.add_links(MenuLink(name='boo', url='/'))

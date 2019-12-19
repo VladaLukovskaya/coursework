@@ -27,24 +27,29 @@ def login():
         user = User.query.filter(User.username == username).first()
         passw = User.query.filter(User.hash_pass == hash_passw)
         if user and passw:
-            print('Ouu')
             login_user(user, remember=form.remember.data)
             session['username'] = form.username.data
-            return redirect('/main', 302)
+            if user.role_id == 1:
+                return redirect('/admin', 302)
+            else:
+                return redirect('/user_menu', 302)
 
     return render_template('login.html', name=session.get('name'), form=form, known=session.get('known', False))
 
+
+@app.route('/user_menu', methods=['GET', 'POST'])
+@login_required
+def user_menu():
+    return render_template('user_menu.html')
 
 
 @app.route('/registry', methods=['GET', 'POST'])
 def registry():
     form = RegForm(request.form)
     if request.method == 'POST' and form.validate():
-
         username = form.username.data
         password = form.password.data.encode()
         hashed_password = hashlib.sha256(password)
-        print(username, password, hashed_password)
         user = User()
         user.username = username
         user.hash_pass = hashed_password
@@ -56,7 +61,7 @@ def registry():
 @app.route('/main', methods=['GET', 'POST'])
 @login_required
 def main():
-    return render_template('index.html')
+    return render_template('base.html')
 
 
 @app.route('/logout/')
@@ -275,7 +280,6 @@ def add_form_proxy():
     return render_template('for_all.html', form=form)
 
 
-
 @app.route('/add_form_regist/')
 @login_required
 def add_form_regist():
@@ -386,13 +390,13 @@ def show_legal():
     legal = LegalPerson.query.all()
     return render_template('show_legal.html', info=legal)
 
-
-@app.route('/show_app_log/')
-@login_required
-def show_app_log():
-    app_log = Log_to_applic.query.all()
-    return render_template('show_app_log.html', info=app_log)
-
+#
+# @app.route('/show_app_log/')
+# @login_required
+# def show_app_log():
+#     app_log = Log_to_applic.query.all()
+#     return render_template('show_app_log.html', info=app_log)
+#
 
 @app.route('/show_log/')
 @login_required
@@ -413,20 +417,20 @@ def show_natural():
 def show_partic():
     partic = Participant.query.all()
     return render_template('show_partic.html', info=partic)
-
-
-@app.route('/show_proxy/')
-@login_required
-def show_proxy():
-    proxy = Proxy.query.all()
-    return render_template('show_proxy.html', info=proxy)
-
-
-@app.route('/show_regist/')
-@login_required
-def show_regist():
-    registration = Registration.query.all()
-    return render_template('show_regist.html', info=registration)
+#
+#
+# @app.route('/show_proxy/')
+# @login_required
+# def show_proxy():
+#     proxy = Proxy.query.all()
+#     return render_template('show_proxy.html', info=proxy)
+#
+#
+# @app.route('/show_regist/')
+# @login_required
+# def show_regist():
+#     registration = Registration.query.all()
+#     return render_template('show_regist.html', info=registration)
 
 
 @app.route('/show_service/')

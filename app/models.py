@@ -10,6 +10,7 @@ class Role(db.Model):
     def __str__(self):
         return str(self.name)
 
+
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
@@ -50,6 +51,9 @@ class Service(db.Model):
     application = db.relationship('Application', backref='Код услуги', lazy='dynamic')
     log = db.relationship('Log', backref='Код услуги', lazy='dynamic')
 
+    def __str__(self):
+        return str(self.code_of_service)
+
 
 class Application(db.Model):
     __tablename__ = 'applications'
@@ -58,6 +62,9 @@ class Application(db.Model):
     code_of_service = db.Column(db.Integer, db.ForeignKey('services.code_of_service'))  # **
     date_of_record = db.Column(db.DATE, nullable=False)
     num_of_docum = db.Column(db.BigInteger, db.ForeignKey('docums_of_client.num_of_doc'))  # **
+
+    def __str__(self):
+        return str(self.num_of_applic)
 
 
 class Employee(db.Model):
@@ -75,6 +82,9 @@ class Employee(db.Model):
     application = db.relationship('Application', backref='Код сотрудника', lazy='dynamic')
     for_lan_know = db.relationship('ForeignLanKnowledge', backref='Код сотрудника', lazy='dynamic')
     client = db.relationship('Client', backref='Код сотрудника', lazy='dynamic')
+
+    def __str__(self):
+        return str(self.code_of_employee)
 
 
 class NaturalPerson(db.Model):
@@ -113,12 +123,18 @@ class CodifOfLanguage(db.Model):
     code_of_lang = db.Column(db.Integer, primary_key=True)
     name_of_lang = db.Column(db.VARCHAR(50), nullable=False)
 
+    def __str__(self):
+        return str(self.name_of_lang)
+
 
 class CodifOfProficiencyLang(db.Model):
     __tablename__ = 'codif_of_proficiency_lang'
     code_of_profic = db.Column(db.Integer, primary_key=True)
     name_of_profic = db.Column(db.VARCHAR(50), nullable=False)
     for_lan_know = db.relationship('ForeignLanKnowledge', backref='Код знания языка', lazy='dynamic')
+
+    def __str__(self):
+        return str(self.code_of_profic)
 
 
 class Client(db.Model):
@@ -134,6 +150,9 @@ class Client(db.Model):
     registration = db.relationship('Country', secondary=Registration, lazy='dynamic')
     proxy = db.relationship('Trustee', secondary=Proxy, lazy='dynamic')
 
+    def __str__(self):
+        return str(self.code_of_client)
+
 
 class DocumOfClient(db.Model):
     __tablename__ = 'docums_of_client'
@@ -141,6 +160,9 @@ class DocumOfClient(db.Model):
     code_of_client = db.Column(db.Integer, db.ForeignKey('clients.code_of_client'))  # **
     name_of_doc = db.Column(db.VARCHAR, nullable=False)
     applications = db.relationship('Application', backref='Номер документа клиента', lazy='dynamic')
+
+    def __str__(self):
+        return str(self.num_of_doc)
 
 
 class Log(db.Model):
@@ -153,6 +175,9 @@ class Log(db.Model):
     form = db.relationship('Form', lazy='dynamic')
     participant = db.relationship('Participant', backref='№ нотариального действия', lazy='dynamic')
     registration = db.relationship('Application', secondary=Log_to_applic,  lazy='dynamic')
+
+    def __str__(self):
+        return str(self.num_of_act)
 
 
 class Trustee(db.Model):

@@ -2,11 +2,11 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block title %}Flasky{% endblock %}
-
+{% block navbar %}{% endblock %}
 {% block page_content %}
     <form method="post">
     <div class="page-header">
-        <h1>This is my app for coursework!</h1>
+        <h1>Приветствую!</h1>
     </div>
     {{ wtf.quick_form(form) }}
 {% endblock %}

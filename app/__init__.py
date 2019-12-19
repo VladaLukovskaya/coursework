@@ -1,12 +1,12 @@
 from flask_admin import Admin, AdminIndexView, expose, BaseView
-from flask import Flask
+from flask_admin.menu import MenuLink
+from flask import Flask, url_for
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager, current_user
 from config import Config
 from flask_admin.contrib.sqla import ModelView
-
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -26,14 +26,12 @@ from app import routes, models
 
 class Controller(ModelView):
     def is_accessible(self):
-        if current_user.role.name == 'user':
-            self.can_delete = False
-
+        if current_user.role_id != 1:
             return False
         return current_user.is_authenticated
 
     def not_aut(self):
-        return "please Login"
+        return "Пожалуйста, войдите в систему"
 
 
 admin = Admin(app,
@@ -58,4 +56,4 @@ admin.add_view(Controller(models.Form, db.session, name='Бланки'))
 admin.add_view(Controller(models.Participant, db.session, name='Участники нот. действия'))
 admin.add_view(Controller(models.Role, db.session, name='Роли'))
 admin.add_view(Controller(models.User, db.session, name='Пользователи'))
-
+admin.add_link(MenuLink(name='Выход', url='/logout'))
